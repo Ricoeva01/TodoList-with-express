@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TodoWKS_03_Bck</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <button class="theme_toggle_btn" aria-label="Toggle Theme">
+      <svg
+        class="icon-sun"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <div class="todo_app">
+      <div class="app_header">
+        <h1 class="todo_title">Let's Do It 💪</h1>
+        <div id="timer-display" class="timer_bubble hidden"></div>
+      </div>
+      <div class="todos_header">
+        <form action="" id="add_form">
+          <input
+            type="text"
+            name="first_text"
+            class="input_text"
+            placeholder="Add a new task..."
+            autocomplete="off"
+          />
+          <button type="submit" class="add_button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M8 12h8" />
+              <path d="M12 8v8" />
+            </svg>
+          </button>
+        </form>
+      </div>
+      <div class="todo_list"></div>
+    </div>
+    <div class="background_selector">
+      <button
+        class="bg_button_item"
+        style="background-image: url(./images/beach_bg.avif)"
+      ></button>
+      <button
+        class="bg_button_item"
+        style="background-image: url(./images/LionBG.avif)"
+      ></button>
+      <button
+        class="bg_button_item"
+        style="background-image: url(./images/skyisthelimit.jpg)"
+      ></button>
+      <button
+        class="bg_button_item"
+        style="background-image: url(./images/motivation\ BG.avif)"
+      ></button>
+    </div>
+    <audio
+      id="timer-sound"
+      src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+    ></audio>
+    <script src="script.js"></script>
+  </body>
+</html>

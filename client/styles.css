@@ -1,0 +1,446 @@
+/* =========================================
+   1. VARIABLES & THEME CONFIGURATION
+   ========================================= */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap");
+
+:root {
+  /* --- COLORS (Palette) --- */
+  --text-primary: #ffffff;
+  --text-secondary: hsla(0, 0%, 80%, 0.5);
+
+  /* Backgrounds (Glassmorphism) */
+  --bg-app: rgba(72, 71, 71, 0.457);
+  --bg-input: hsla(0, 1%, 52%, 0.7);
+  --bg-item: hsla(0, 0%, 97%, 0.05);
+  --bg-item-active: hsla(0, 0%, 97%, 0.8); /* Pour l'input d'édition */
+
+  /* Borders & Shadows */
+  --shadow-app: inset 2px 4px 16px 0 hsla(0, 0%, 97%, 0.06),
+    0 4px 8px 0 hsla(0, 0%, 0%, 0.2);
+  --border-radius: 16px;
+
+  /* Accents */
+  --accent-green: hsla(127, 79%, 55%, 0.9);
+  --accent-red: #f87171;
+  --accent-orange: hsla(40, 90%, 50%, 0.1);
+  --timer-color: hsla(40, 100%, 70%, 1);
+
+  /* Fonts */
+  --font-main: "Space Grotesk", sans-serif;
+}
+
+/* Exemple pour plus tard : Pour faire un theme clair, 
+   il suffira d'écraser ces variables dans body.light-mode { ... } */
+
+/* =========================================
+   2. RESET & BASE STYLES
+   ========================================= */
+* {
+  font-family: var(--font-main);
+  color: var(--text-primary);
+  box-sizing: border-box; /* Indispensable pour éviter les bugs de taille */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #c1bdbd;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* =========================================
+   3. COMPONENTS : MAIN APP CONTAINER
+   ========================================= */
+.todo_app {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  background: var(--bg-app);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-app);
+  backdrop-filter: blur(50px);
+}
+
+.todo_title {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.app_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* =========================================
+   4. COMPONENTS : HEADER & FORM
+   ========================================= */
+.todos_header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#add_form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Input Styles (Shared) */
+.input_text,
+.editing input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: var(--bg-input);
+  box-shadow: inset 2px 4px 16px 0 hsla(0, 0%, 97%, 0.06);
+  color: hsla(0, 2%, 10%, 0.9);
+  font-size: 1rem;
+}
+
+.input_text::placeholder {
+  color: hsla(0, 15%, 95%, 0.86);
+}
+
+.input_text:focus,
+.editing input:focus {
+  outline: 2px solid hsla(143, 72%, 50%, 0.75);
+}
+
+/* =========================================
+   5. COMPONENTS : TODO LIST & ITEMS
+   ========================================= */
+.todo_list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.todo_item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-item);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.text_todo {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 1rem;
+  width: 100%;
+  word-break: break-word; /* Évite que le texte ne sorte si trop long */
+}
+
+/* --- Checkbox Component --- */
+.todo_checkbox {
+  --size: 20px;
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 3px solid hsla(0, 12%, 97%, 1);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.todo_checkbox input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.todoCheckbox_circle {
+  --size: 12px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 100%;
+  background: linear-gradient(
+    180deg,
+    hsla(0, 0%, 97%, 0.8),
+    hsla(0, 0%, 97%, 0.5)
+  );
+  opacity: 0;
+  transition: opacity 100ms ease-in-out;
+}
+
+/* =========================================
+   6. COMPONENTS : BUTTONS (Shared Styles)
+   ========================================= */
+.add_button,
+.delete_button,
+.edit_button,
+.timer_button,
+.save_button,
+.btn_timer_action {
+  width: 34px;
+  height: 34px;
+  border-radius: 100%;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 100ms ease-in-out;
+  flex-shrink: 0;
+}
+
+/* Default Opacity for item buttons */
+.delete_button,
+.edit_button,
+.timer_button,
+.save_button {
+  opacity: 0.5;
+}
+
+/* Hover Effects */
+.add_button:hover {
+  background-color: var(--accent-green);
+  opacity: 1;
+}
+
+.todo_item:hover .edit_button,
+.todo_item:hover .timer_button,
+.todo_item:hover .delete_button {
+  opacity: 1; /* Apparition au survol de la ligne */
+}
+
+.edit_button:hover,
+.timer_button:hover,
+.save_button:hover {
+  outline: 1px solid hsla(143, 72%, 56%, 0.6);
+  transform: scale(1.1);
+}
+
+.delete_button:hover {
+  outline: 1px solid hsla(0, 72%, 56%, 0.6);
+  background-color: var(--accent-red);
+}
+
+/* Active (Click) Effects */
+.add_button:active,
+.delete_button:active,
+.edit_button:active,
+.timer_button:active {
+  transform: scale(0.9);
+}
+
+/* =========================================
+   7. STATES (MODIFIERS)
+   ========================================= */
+
+/* --- Checked State --- */
+.todo_item.checked .text_todo {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+.todo_item.checked .todoCheckbox_circle {
+  opacity: 1;
+}
+
+/* --- Editing State --- */
+.editing input {
+  background: var(--bg-item-active);
+  /* Specific styling overrides for edit mode are inherited from .input_text above */
+}
+.todo_item.editing,
+.todo_item.timing_active {
+  user-select: none; /* Empêche la sélection pendant le drag impossible */
+}
+
+/* --- Dragging State --- */
+.todo_item.dragging {
+  opacity: 0.5;
+  border: 2px dashed #ccc;
+  background-color: #f9f9f9;
+}
+
+/* --- Empty List Message --- */
+.todo_list:empty::after {
+  content: "No todos yet please add one!";
+  display: block;
+  text-align: center;
+  margin-top: 2rem;
+  color: hsla(0, 0%, 99%, 0.9);
+  font-size: 1rem;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* =========================================
+   8. COMPONENT : TIMER SYSTEM
+   ========================================= */
+.todo_item.timing_active {
+  background: var(--accent-orange);
+  border: 1px solid hsla(40, 90%, 60%, 0.5);
+  box-shadow: 0 0 15px hsla(40, 90%, 60%, 0.2);
+}
+
+.timer_setup_container,
+.timer_running_container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.timer_input {
+  width: 60px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid hsla(0, 0%, 100%, 0.2);
+  background: hsla(0, 0%, 0%, 0.2);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+.timer_input:focus {
+  outline: 2px solid hsla(40, 90%, 60%, 0.8);
+}
+
+.timer_display {
+  font-family: var(--font-main);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--timer-color);
+  margin-right: auto;
+  padding-left: 10px;
+  text-shadow: 0 0 5px hsla(40, 100%, 70%, 0.5);
+}
+
+.btn_timer_start {
+  color: #4ade80;
+}
+.btn_timer_stop {
+  color: #f87171;
+}
+
+.timer_bubble {
+  /* Animation pour la fin du timer si tu veux garder la bulle optionnelle */
+  animation: popIn 0.3s ease-out;
+}
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* =========================================
+   9. UTILITIES & MISC
+   ========================================= */
+.hidden {
+  display: none;
+}
+
+.background_selector {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+
+.bg_button_item {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: white;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.bg_button_item:hover {
+  transform: scale(1.1);
+}
+
+/* =========================================
+   10. LIGHT MODE THEME
+   ========================================= */
+body.light-mode {
+  /* On écrase les couleurs sombres par des couleurs claires */
+  --text-primary: #111111;
+  --text-secondary: hsla(0, 1%, 23%, 0.6);
+
+  /* Backgrounds plus clairs */
+  --bg-app: rgba(255, 255, 255, 0.605); /* Verre blanc */
+  --bg-input: #c4bfbf;
+  --bg-item: #ffffff;
+  --bg-item-active: #f0f0f0;
+
+  /* Ombres plus douces pour le blanc */
+  --shadow-app: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+
+  /* On change l'accent du timer pour qu'il soit lisible sur du blanc */
+  --timer-color: #d97706; /* Orange plus foncé */
+}
+
+/* Style du bouton flottant Toggle */
+.theme_toggle_btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-app);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.theme_toggle_btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.theme_toggle_btn svg {
+  color: var(--text-primary);
+  pointer-events: none; /* Évite les bugs de clic sur l'icône */
+}
