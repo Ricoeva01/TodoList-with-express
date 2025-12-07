@@ -11,7 +11,7 @@ A simple and efficient task management application
 - Reorder tasks using Drag & Drop functionality
 - Start a timer (max 60 min per task) with a sound notification upon completion
 - Stop the timer
-- Data persistence (JSON)
+- Data persistence (sqlite3)
 - Define the background of the Todo List.
 - Dark & Light Mode Functionnality
 
